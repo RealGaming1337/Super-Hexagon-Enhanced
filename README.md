@@ -5,7 +5,16 @@
 FPS counter, and settings for all of it inside the game's own OPTIONS menu.
 
 Made by **RealGaming1337**. Open source (MIT). No game files are modified, and the repository contains
-no game code or assets.
+no game code or game files.
+
+<p align="center">
+  <img src="docs/images/gameplay.gif" alt="Super Hexagon running at 500 FPS with Super Hexagon Enhanced" width="720">
+</p>
+
+<p align="center">
+  <b><a href="docs/media/showcase.mp4">▶ Watch the 28-second showcase video</a></b> ·
+  <a href="https://github.com/RealGaming1337/Super-Hexagon-Enhanced/releases/latest">Download</a>
+</p>
 
 ## Features
 
@@ -16,6 +25,20 @@ no game code or assets.
 - **Widescreen:** fills 16:9, 21:9 and wider screens instead of pillarboxing to 16:10
 - **FPS counter** in the bottom-left corner, in the game's own tab style
 - **No installer:** one DLL next to the game; delete it to uninstall
+
+## Screenshots
+
+| Gameplay at 500 FPS | |
+|---|---|
+| ![Gameplay at 500 FPS](docs/images/gameplay-1.png) | ![Gameplay at 500 FPS](docs/images/gameplay-2.png) |
+| **New OPTIONS entries** | **Main menu** |
+| ![OPTIONS menu with FPS LIMIT, FPS counter and widescreen entries](docs/images/options.png) | ![Main menu with the FPS counter](docs/images/main-menu.png) |
+
+**Widescreen:** vanilla pillarboxes to 16:10 (left); the widescreen option fills the screen (right).
+
+| Widescreen off | Widescreen on |
+|---|---|
+| ![Widescreen off: black bars at the sides](docs/images/widescreen-off.png) | ![Widescreen on: full width](docs/images/widescreen-on.png) |
 
 ## Install
 
