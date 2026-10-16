@@ -1,0 +1,13 @@
+# build output (release binaries are built by GitHub Actions, see .github/workflows/build.yml)
+build/
+*.obj
+*.exp
+*.lib
+*.pdb
+
+# private development journal (its content is in docs/TECHNICAL_NOTES.md)
+MODLOG.md
+
+# runtime files the mod writes next to SuperHexagon.exe
+HexFPS.ini
+HexFPS.log

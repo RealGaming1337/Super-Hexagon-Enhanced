@@ -1,0 +1,58 @@
+# Builds version.dll from this repository's source on GitHub's own Windows runners.
+# Pushing a tag like v1.0.0 also publishes a GitHub Release with the DLL, its SHA-256 and a
+# signed build-provenance attestation, so anyone can check that the release binary was built
+# from this exact source:  gh attestation verify version.dll --repo RealGaming1337/Super-Hexagon-Enhanced
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: write       # create the release (tags only)
+  id-token: write       # sign the build-provenance attestation
+  attestations: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        shell: cmd
+        run: build.bat
+
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory dist | Out-Null
+          Copy-Item build/version.dll dist/
+          Compress-Archive -Path build/version.dll, README.md, LICENSE -DestinationPath dist/Super-Hexagon-Enhanced.zip
+          # LF line endings so `sha256sum -c SHA256SUMS.txt` works on every OS
+          $sums = Get-FileHash dist/version.dll, dist/Super-Hexagon-Enhanced.zip -Algorithm SHA256 |
+            ForEach-Object { "$($_.Hash.ToLower())  $(Split-Path $_.Path -Leaf)`n" }
+          [IO.File]::WriteAllText("$PWD/dist/SHA256SUMS.txt", -join $sums)
+          Get-Content dist/SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Super-Hexagon-Enhanced
+          path: dist/
+
+      - name: Attest build provenance
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: "dist/version.dll, dist/Super-Hexagon-Enhanced.zip"
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" dist/Super-Hexagon-Enhanced.zip dist/version.dll dist/SHA256SUMS.txt `
+            --title "Super Hexagon Enhanced ${{ github.ref_name }}" --notes-file CHANGELOG.md
